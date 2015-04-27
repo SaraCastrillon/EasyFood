@@ -1,62 +1,77 @@
 <?PHP
-$nombre="";
-$descripcion="";
-$personas="";
-$puntuacion="";
-$preparacion="";
-$ingredientes="";
-$tiempo="";
-$categoria="";
-$recetas = array("");
-$ingredientes1 = array("papa","salsa","sal","repollo","tomate","limon","coco","cebolla");
-$varmasvar="";
-$ingredientes=array("");
+
+/*
+//trabajando con elasticserch
+//dependencia
+require '/var/www/html/vendor/autoload.php';
+
+//instancia de clientes
+$client = new Elasticsearch\Client();
+
+//Definiendo index y type
+$params = array();
+$params['index'] = 'easyfood';
+$params['type']  = 'receta';
 
 
-if(empty($_POST["name"])||empty($_POST["descripcion"])||empty($_POST["porciones"])||empty($_POST["puntuacion"])||empty($_POST["preparacion"])||empty($_POST["ingredientes"])||empty($_POST["tiempo"])||empty($_POST["categoria"])){
- $message = "Por favor digite todos los campos";
-echo "<script type='text/javascript'>alert('$message');</script>";
+//consulta ingredientes existentes en la bd
+$params['body']['aggs']['all_interests']['terms']['field'] = 'ingredientes';
+
+//respuesta de la consulta
+$results = $client->search($params);
+
+//arreglo con solo los ingredientes de la respuesta
+$tmp = $results['aggregations']['all_interests']['buckets'];
+
+//tamaño del arreglo
+$total =  count($tmp);
+
+$ingredientes1 = array();
+
+for($i=0;$i<$total;$i++){
+	$tmp2 = $tmp[$i];
+	array_push($ingredientes1, $tmp2);
+	
 }
-else
-{
-    $nombre=$_POST["name"];
-$descripcion=$_POST["descripcion"];
-$personas=$_POST["porciones"];
-$puntuacion=$_POST["puntuacion"];
-$preparacion=$_POST["preparacion"];
-$ingredientes=$_POST["ingredientes"];
-$tiempo=$_POST["tiempo"];
-$categoria=$_POST["categoria"];
-    $recetas=array($nombre, $descripcion, $personas,$puntuacion, $preparacion, " ", $tiempo, $categoria);
-    
+*/
+
+//Trabajando con mongodb
+
+$conexion = new MongoClient();
+$coleccion = $conexion->easyfood->receta;
+
+//get ingredientes
+$tmp = ($coleccion->distinct("ingredientes"));
+
+//tamaño del arreglo
+$total =  count($tmp);
+
+$ingredientes1 = array();
+
+for($i=0;$i<$total;$i++){
+	$tmp2 = $tmp[$i];
+	array_push($ingredientes1, $tmp2);
 }
 
-for($i=0; $i<sizeof($recetas); $i++){
-echo $recetas[$i];
-//echo $ingredientes1[$i];
-}
+//---------------------------------------------------------------------
 
+
+/*$ingredientes1 = array("papa","salsa","sal","repollo","tomate","limon","coco","cebolla","carne","pollo","huevos","queso","pescado","zanahoria","pan"
+,"brocoli","manzana");*/
 
 for($i=0; $i<sizeof($ingredientes1); $i++){
 $ingredientes1[$i]=$ingredientes1[$i].".png";
 //echo $ingredientes1[$i];
 }
 
-
-for($i=0; $i<sizeof($ingredientes1); $i++){
-//echo "hola" .$i;
-    $varmasvar=$i;
- //   echo $_POST["1"];
-if(!empty($_POST[$varmasvar])){
-       
+for($i=0; $i<=sizeof($ingredientes1); $i++){
+$varmasvar=$ingredientes[$i];
+echo $varmasvar;
+if(isset($_POST[$varmasvar])){
  $ingredientes[$i]=$varmasvar;
-    
-}
-}
-
-for($i; $i< sizeof($ingredientes); $i++){
  echo $ingredientes[$i];
-}
 
+}
+}
 
 ?>

@@ -1,10 +1,21 @@
 <!DOCTYPE HTML>
+
 <!--
 	Twenty by HTML5 UP
 	html5up.net | @n33co
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
-<?php include("consultas.php"); ?>
+<?php include("easyFoodLogic.php");
+session_start();
+$_SESSION["ii"]="";
+//$arr = $_SESSION["ii"];
+if(sizeof($arr )>0)
+{
+
+//header("location:recetas_consultas.php");
+
+}
+ ?>
 <html>
 	<head>
 		<title>Mis ingredientes</title>
@@ -88,7 +99,7 @@
 										<section>
 									
 											<p><h4>"El cocinero Sin probar bocado de los majares que ha hecho,<br>
-                                            </h4>suele quedar satisfecho sin haberlos probado""</p>
+                                            </h4>suele quedar satisfecho sin haberlos probado"</p>
 										
 										</section>
                             
@@ -109,56 +120,77 @@
                                         <li>
                                           <div class="overflow">
                                         <?php
-                                               for($i=0;$i<sizeof($ingredientes1);$i++){
+                                               getIngredientes();
+                                               for($i=0;$i<sizeof($ingredientesMostrar);$i++){
 
                                                  $name=$i;
                                                    
                                                  echo "
-                                                   <html>
+                                                   
                                                      <label>
-                                                       <img src="."images/Easyfood/$ingredientes1[$i]".">
+                                                      $ingredientesMostrar[$i]"."
                                                        <input type="."'checkbox'" ."name="."$name".">
                                                      </label>
-                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                                                   </html>";
+                                                   ";
                                                    if(($i % 4 )== 0 && $i !=0){
                                                    echo "
-                                                        <html>
+                                                         <br/>
                                                           <br/>
-                                                          <br/>
-                                                          <br/>
-                                                        </html>
-
-                                                        ";
+                                                          ";
                                                     }
                                                 }
-                                                    for($i=0; $i<sizeof($ingredientes1); $i++){
-                                                    //echo "hola" .$i;
+                                              
+                                                    for($i=0; $i<sizeof($ingredientesMostrar); $i++){
+                                                 
                                                         $varmasvar=$i;
-                                                     //echo $_POST["0"];
-                                                    if(!empty($_POST[$varmasvar])){
+                                                     if(!isset($_POST[$varmasvar])){
+                                                            //array_push($ingredientesIngresados,$ingredientesMostrar[$varmasvar]);
+				                         
+							 //echo $ingredientesIngresados[0];				       
+				                     }
+                                                        else
+                                                        {
+							//	echo "Sarita";
+                                                                  
+                                                            if($_POST[$varmasvar]){
 
-                                                     $ingredientes[$i]=$varmasvar;
+                                                             array_push($ingredientesIngresados,$ingredientesMostrar[$varmasvar]);
+							//	$_SESSION["ii"]= $ingredientesIngresados;
 
-                                                    }
-                                                    }
-
-                                                for($i; $i< sizeof($ingredientes); $i++){
-                                                 echo $ingredientes[$i];
+                                                            }
+                                                           }
+                                                     }
+ 							$_SESSION["ii"]= $ingredientesIngresados;
+										      
+                                                for($i=0; $i< sizeof($ingredientesIngresados); $i++){
+                                                echo $ingredientesIngresados[$i];
+							echo $_SESSION["ii"][$i];
+						//$_SESSION["ii"]=$ingredientesIngresados;
                                                 }
+	
+							      //validación Buscar Recetas
 
+							     
+							     
+							    //  buscarReceta();
+							      if(sizeof($ingredientesIngresados)>0){
+                                                              // header("location:recetas_consultas.php");
+                                                             }
 
                                          ?>
 
 	       
                                                 
                                             </div>
-                                            <div class="clear"></div>
+                                            <div class="clear"><div>
         </ul>
-        <center><input type=submit class="btn" align=center value="Buscar Receta"s></center>
+        <center><input name="subm" type=submit  class="btn" align=center value="Buscar Receta"s></center>
         </form>
-							</div>
+				
+
+			</div>
 						</div>
 					</section>
 

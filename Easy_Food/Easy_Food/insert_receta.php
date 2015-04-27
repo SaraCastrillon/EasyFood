@@ -1,4 +1,8 @@
 <!DOCTYPE HTML>
+<?php
+include("easyFoodLogic.php");
+session_start();
+?>
 <!--
 	Twenty by HTML5 UP
 	html5up.net | @n33co
@@ -6,7 +10,7 @@
 -->
 <html>
 	<head>
-		<title>Contáctenos</title>
+		<title>Insertar Recetas</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -43,7 +47,6 @@
 								<li><a href="no-sidebar.html">Estoy de afán</a></li>
                                 <li><a href="insert_receta.php">Insertar Recetas</a></li>
 								<li><a href="contacto.html">Contáctenos</a></li>
-                                
                                 <!--Posibilidad de hacer un sumenú-->
 								<!--<li class="submenu">
 									<a href="">Chefs</a>
@@ -65,20 +68,18 @@
 				<header class="special container">
 					<span class="icon"> <img src="images/easyfood.png"/></span>
 					<h2>Ingresar Receta</h2>
-					<p>Para ingresar una receta es necesario que llene todo los campos marcados con (*)</p>
+					<p>Para ingresar una receta es necesario que llene todo los campos </p>
 				</header>
-
 				<!-- One -->
 					<section class="wrapper style4 special container 75%">
 
 						<!-- Content -->
 							<div class="content">
-								<form method="post" action="consultas.php">
-									<div class="row 50%">
+								<form method="post" action="easyFoodLogic.php">
+								  <div class="row 50%">
 										<div class="12u 12u(mobile)">
-											<input type="text" name="name" placeholder="Nombre" />
+											<?php echo "<input type=text name=name placeholder=Nombre />"; ?>
 										</div>
-										
 									</div>
 									<div class="row 50%">
 										<div class="12u 12u(mobile)">
@@ -122,11 +123,10 @@
                                            </select>
                                                                                     </div>
 									</div>
-								
 									<div class="row">
 										<div class="12u">
 											<ul class="buttons">
-												<li><input type="submit" class="special" value="Enviar Receta" /></li>
+												<li><input type="submit" class="special" value="Enviar Receta" name="insert" /></li>
 											</ul>
 										</div>
 									</div>
