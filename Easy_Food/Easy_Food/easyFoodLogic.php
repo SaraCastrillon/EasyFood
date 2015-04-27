@@ -6,10 +6,9 @@ $coleccion = $conexion->easyfood->receta;
 
 //Variables globales
 $ingredientesMostrar = array();  //Ingredientes que el usuario tendrá la posibilidad de seleccionar.
-session_start();
+
  $ingredientesIngresados = array(); //Arreglo que que contiene los ingredientes seleccionados por el usuario.
 //$ingredientesIngresados = array();
-//unset($_SESSION["ii"]);
 //$ingredientesIngresados = array("uno", "dos");
 $recetasIngresadas = array();	 //Arreglo que contiene la receta que se va a insertar.
 $ingredientes_recetas = array();	 //Arreglo que contiene los ingrdientes de la receta que se va a insertar.
@@ -17,22 +16,22 @@ $recetas = array(); 	       //Arrego que será retornado hacia el frontend.
 $recetasInicio = array();       //Arrego que contiene las recetas clasificadas por puntuación.
 $totalrecetas = 3; 	       //Cantidad de recetas que serán devueltas
 $recetaid = array();	       //Arreglo solo para uso de la funcion "buscarReceta()"
-$arrayaux = $_SESSION["ii"];
+//$arrayaux = $_SESSION["ii"];
 
-/*
+
 //Función que guarda los datos ingresados para una receta en un arreglo
-function guardarReceta(){
+
 //Fragmento que coge las recetas ingresadas
-	 global $nombre="";
-	 global $descripcion="";
-	 global $personas="";
-	 global $puntuacion="";
-	 global $preparacion="";
-	 global $ingredientesr="";
-	 global $tiempo="";
-	 global $categoria="";
-	 global $recetasIngresadas;
-	 global $ingredientes_recetas;
+	 $nombre="";
+	 $descripcion="";
+	 $personas="";
+	 $puntuacion="";
+	 $preparacion="";
+	 $ingredientesr="";
+	 $tiempo="";
+	 $categoria="";
+	 $recetasIngresadas;
+	 $ingredientes_recetas;
 	if(isset($_POST["insert"])){
 		if(empty($_POST["name"])||empty($_POST["descripcion"])||empty($_POST["porciones"])||empty($_POST["puntuacion"])||empty($_POST["preparacion"])||empty($_POST["ingredientes"])||empty($_POST["tiempo"])||empty($_POST["categoria"])){
 			$message = "Por favor digite todos los campos";	
@@ -48,21 +47,24 @@ function guardarReceta(){
 			  $ingredientesr=$_POST["ingredientes"];
 			  $tiempo=$_POST["tiempo"];
 			  $categoria=$_POST["categoria"];
-    			  $recetasIngresadas=array($nombre, $descripcion, $personas,$puntuacion, $preparacion, " ", $tiempo, $categoria);
-    			  $ingredientes_recetas=explode(',', $ingredientesr);
+			  $ingredientes_recetas=explode(',', $ingredientesr);
+    			  $recetasIngresadas=array("nombre"=> $nombre,"descripcion"=> $descripcion,"personas"=> $personas,"puntuacion"=> $puntuacion,"preparacion"=> $preparacion,"ingredientes"=> $ingredientes_recetas,"tiempo"=> $tiempo,"categoria"=> $categoria);
+    			 // $ingredientes_recetas=explode(',', $ingredientesr);
                           if(sizeof($recetasIngresadas)>0){
 				$message = "Su receta fue guardada con exito";
-                        	echo "<script type='text/javascript'>alert('$message');</script>";                            
+                        	echo "<script type='text/javascript'>alert('$message');</script>";
+	                                                
 			  }
+
 			  insertarRecetas();
+			
 			}
+			 header("location:insert_receta.php"); 
 		}
-}
-*/
+
 //Función que inserta las recetas en la BD
 function insertarRecetas(){
    global $recetasIngresadas;
-   global $ingredientes_recetas;
    global $coleccion;
    $coleccion->insert($recetasIngresadas);
 }	 
@@ -76,7 +78,7 @@ function recetasInicio(){
    
    $cursor = $coleccion->find(array())->sort(array("puntuacion" => 1));
 
-   //cargando las recetas al arreglo $recetas
+   //cargando las recetas al arreglo $recetasInicio
    while ($cursor->hasNext()){
    	 $tmp = $cursor -> getNext();
 	 //print_r ($tmp);
@@ -87,8 +89,11 @@ function recetasInicio(){
 
 //Función para consultar recetas con base a los ingredientes ingresados por el usuario
 function buscarReceta(){
-
-//echo count($ingredientesIngresados);
+//echo 123;
+	 session_start();
+	 //print_r($_SESSION["ii"]);
+	 //$arrayaux = $_SESSION["ii"];
+	 //unset($_SESSION["ii"]);
 
 	 //Variables globales
 	 global $coleccion;
@@ -96,10 +101,8 @@ function buscarReceta(){
 	 global $recetas;
 	 global $totalrecetas;
 	 global $recetaid;
-	
-//print_r($ingredientesIngresados);
-	 //Variables locales
 
+	 //Variables locales
 	 $arr = array();
 
 	 $consulta = array("_id" => 1);
@@ -112,13 +115,15 @@ function buscarReceta(){
 	 }
 
 	 //Aumentando el contador de las recetas que tienen un ingrediente, depende de la función aumentar()
-	 for($i=0;$i<count($ingredientesIngresados);$i++){
-		$cursor = $coleccion->find(array("ingredientes" => $ingredientesIngresados[$i]), array("_id" => 1));
-	 	while ($cursor->hasNext()){
+	 for($i=0;$i<count($_SESSION["ii"]);$i++){
+		//echo $_SESSION["ii"][$i];
+		$cursor = $coleccion->find(array("ingredientes" => $_SESSION["ii"][$i]), array("_id" => 1));
+ 		while ($cursor->hasNext()){
 	 	      //var_dump($cursor->getNext());
 	 	      aumentar(array_pop($cursor->getNext()));
 	 	}
 	 }
+	 unset($_SESSION["ii"]);
 
 	 //Moviendo $recetaid a $arr con valor y clave
 	 for($i=0;$i<count($recetaid);$i++){

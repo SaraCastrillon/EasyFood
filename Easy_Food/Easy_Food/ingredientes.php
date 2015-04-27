@@ -7,13 +7,18 @@
 -->
 <?php include("easyFoodLogic.php");
 session_start();
-$_SESSION["ii"]="";
+//$_SESSION["ii"]="";
 //$arr = $_SESSION["ii"];
-if(sizeof($arr )>0)
+if(isset($_SESSION["ii"]))
 {
+//echo "tiene algo";
+//echo $_SESSION["ii"][0];
+header("location:recetas_consultas.php");
 
-//header("location:recetas_consultas.php");
-
+}
+else
+{
+echo "esta vacio";
 }
  ?>
 <html>
@@ -165,8 +170,9 @@ if(sizeof($arr )>0)
  							$_SESSION["ii"]= $ingredientesIngresados;
 										      
                                                 for($i=0; $i< sizeof($ingredientesIngresados); $i++){
-                                                echo $ingredientesIngresados[$i];
-							echo $_SESSION["ii"][$i];
+                                               // echo $ingredientesIngresados[$i];
+						
+						//	echo $_SESSION["ii"][$i];
 						//$_SESSION["ii"]=$ingredientesIngresados;
                                                 }
 	

@@ -2,8 +2,7 @@
 <?php include("easyFoodLogic.php");
 session_start();
  
-for($i=0;$i<sizeof($_SESSION["ingredientescomunes"]);$i++)
-{echo $ingredientesIngresados[$i];}
+print_r($_SESSION["ii"]);
  ?>
 <html>
 	<head>
@@ -96,9 +95,9 @@ for($i=0;$i<sizeof($_SESSION["ingredientescomunes"]);$i++)
 						 ";*/
 					//}
 				   //}
-		                $cualquier = $_SESSION["ii"];
+		                //$cualquier = $_SESSION["ii"];
 				buscarReceta(); 
-                                    echo "<strong>Nombre: </strong> " ; echo $cualquier[0]; echo "<br>";
+                                    echo "<strong>Nombre: </strong> " ; echo $recetas[0]["nombre"]; echo "<br>";
                                     echo "<strong>Número Personas: </strong> " ; echo $recetas[0]["personas"]; echo "<br>";
                                     echo "<strong>Descripción: </strong> " ; echo $recetas[0]["descripcion"]; echo "<br>";
                                     echo "<strong>Puntuación: </strong> " ; echo $recetas[0]["puntuacion"]; echo "<br>";
