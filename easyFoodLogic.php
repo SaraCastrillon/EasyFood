@@ -1,5 +1,5 @@
 <?PHP
-
+session_start();
 //Conneccion a Mongodb
 $conexion = new MongoClient();
 $coleccion = $conexion->easyfood->receta;
@@ -17,9 +17,39 @@ $recetasInicio = array();       //Arrego que contiene las recetas clasificadas p
 $totalrecetas = 3; 	       //Cantidad de recetas que serán devueltas
 $recetaid = array();	       //Arreglo solo para uso de la funcion "buscarReceta()"
 //$arrayaux = $_SESSION["ii"];
+if(isset($_SESSION[ii2])){
+//$_SESSION[ii]=$_SESSION[ii2];
+//unset($_SESSION[ii2]);
+}
+$lala = 7;
+//getIngredientes();
+//echo count($ingredientesMostrar);
 
+//Fragmento que coge el user y password
 
-//Función que guarda los datos ingresados para una receta en un arreglo
+$user="";
+$pass="";
+if($_POST["ingresar"]){
+$user=$_POST["user"];
+$pass=$_POST["pass"];
+//$login = array("user"=> $user,"pass"=> $pass);
+// header("location:index.php");
+$response = file_get_contents("http://54.148.184.231/easyfood/Easy_Food/services.php?funcion=login&user=".$user."&pass=".$pass);
+//print_r($response);
+if(strcmp($response, "0")){
+$message = "La clave o el usuario es incorrecto";
+echo "<script type='text/javascript'>alert('$message');";
+echo "window.location = 'login.php';";
+echo "</script>";
+// header('Location: login.php');
+}
+else
+{
+$_SESSION["user"]=$response;
+header('Location: index.php');
+
+}
+}
 
 //Fragmento que coge las recetas ingresadas
 	 $nombre="";
@@ -87,9 +117,14 @@ function recetasInicio(){
 }
 
 
+function test(){
+global $lala;
+$lala = 10;
+}
+
 //Función para consultar recetas con base a los ingredientes ingresados por el usuario
 function buscarReceta(){
-//echo 123;
+
 	 session_start();
 	 //print_r($_SESSION["ii"]);
 	 //$arrayaux = $_SESSION["ii"];
@@ -123,13 +158,27 @@ function buscarReceta(){
 	 	      aumentar(array_pop($cursor->getNext()));
 	 	}
 	 }
-	 unset($_SESSION["ii"]);
+	// unset($_SESSION["ii"]);
+//.......................................................................................................
+	//contando la cantidad de ingredientes que tiene cada receta
+	$contador = 0;
+	for($i=0;$i<count($recetaid);$i++){
+		$cursor = $coleccion->find(array("_id" => $recetaid[$i][0]), array("ingredientes" => 1));
+		
+	 	while ($cursor->hasNext()){
+	 	      $contador =  count((array_pop($cursor -> getNext())));
+	 	}
+
+		$recetaid[$i][1] = ($recetaid[$i][1] * 100)/$contador;
+		$contador = 0;
+	}
 
 	 //Moviendo $recetaid a $arr con valor y clave
 	 for($i=0;$i<count($recetaid);$i++){
 		$h = array('id' => $recetaid[$i][0], 'count' => $recetaid[$i][1]);
 	 	array_push($arr, $h);
 	 }
+//.......................................................................................................
 
 	 //Ordenando el arreglo $arr
 	 foreach ($arr as $clave => $fila) {
@@ -179,23 +228,39 @@ function aumentar($id){
 
 //Funcion que lista los ingredientes existentes
 function getIngredientes(){
-
+echo 1;
    global $coleccion;
    global $ingredientesMostrar;
 
    //get ingredientes
    $tmp = ($coleccion->distinct("ingredientes"));
-
+echo 2;
+echo count($tmp);
    //tamaño del arreglo
    $total =  count($tmp);
 
-   //$ingredientes1 = array();
+   $tmp2 = array();
 
    for($i=0;$i<$total;$i++){
-	$tmp2 = $tmp[$i];
-   	array_push($ingredientesMostrar, $tmp2);
+	$h = array('ingrediente' => $tmp[$i]);
+	array_push($tmp2, $h);
    }
+echo 3;
+	 //Ordenando el arreglo $arr
+	 foreach ($tmp2 as $clave => $fila) {
+	 	 $ingrediente[$clave] = $fila['ingrediente'];
+	 }
+	 array_multisort( $ingrediente, SORT_ASC, $tmp2);
+echo 4;
+
+   for($i=0;$i<$total;$i++){
+	foreach($tmp2[$i] as $ingrediente => $valor){
+  	   array_push($ingredientesMostrar, $valor);
+	}
+   }
+echo 5;
   //print_r($ingredientesMostrar);
+echo count($ingredientesMostrar);
 }
 
 ?>

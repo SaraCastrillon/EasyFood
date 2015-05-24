@@ -1,9 +1,14 @@
 <!DOCTYPE HTML>
 <?php include("easyFoodLogic.php");
 session_start();
- 
-print_r($_SESSION["ii"]);
- ?>
+if(isset($_SESSION['ii2'])){
+$_SESSION['ii']=$_SESSION['ii2'];
+unset($_SESSION['ii2']);
+} 
+//print_r($_SESSION["ii"]);
+//buscarReceta();
+//echo $recetas[0]["nombre"]; 
+?>
 <html>
 	<head>
 		<title>EasyFood</title>
@@ -40,16 +45,17 @@ print_r($_SESSION["ii"]);
 
 		<!-- Header -->
 			<header id="header" class="alt">
-				<h1><a href="index.html">Easy Food</a></h1>
+				<h1><a href="index.php">Easy Food</a></h1>
 				<nav id="nav">
 					<ul>
-						<li class="current"><a href="index.html">Inicio</a></li>
+						<li class="current"><a href="index.php">Inicio</a></li>
 						<li class="submenu">
 							<a href="">Menús</a>
 							<ul>
 								<li><a href="ingredientes.php">Mis ingredientes</a></li>
-								<li><a href="recetario.html">Recetario</a></li>
+								<!--<li><a href="recetario.html">Recetario</a></li>-->
 								<li><a href="no-sidebar.html">Estoy de afán</a></li>
+								<li><a href="insert_receta.php">Ingresar una receta</a></li>
 								<li><a href="contacto.html">Contáctenos</a></li>
                                 
                                 <!--Posibilidad de hacer un sumenú-->
@@ -86,6 +92,7 @@ print_r($_SESSION["ii"]);
 										<h3><strong><center>Receta número 1</center></strong></h3>
                                     </header>
 									<a href="#" class="image featured"><img src="images/comidapeque2.jpg" alt="" /></a>
+				
 				<form action="recetas_consultas.php" method = "post">
 				<?php
 				   //for($row = 0; $row < sizeof($recetas); $row++)){
@@ -97,7 +104,7 @@ print_r($_SESSION["ii"]);
 				   //}
 		                //$cualquier = $_SESSION["ii"];
 				buscarReceta(); 
-                                    echo "<strong>Nombre: </strong> " ; echo $recetas[0]["nombre"]; echo "<br>";
+				    echo "<strong>Nombre: </strong> " ; echo $recetas[0]["nombre"]; echo "<br>";
                                     echo "<strong>Número Personas: </strong> " ; echo $recetas[0]["personas"]; echo "<br>";
                                     echo "<strong>Descripción: </strong> " ; echo $recetas[0]["descripcion"]; echo "<br>";
                                     echo "<strong>Puntuación: </strong> " ; echo $recetas[0]["puntuacion"]; echo "<br>";
@@ -105,11 +112,9 @@ print_r($_SESSION["ii"]);
 
                                 ?>
 				</form>
-				<form  method = post action = "receta_completa.php?var=receta1">
-				  <center> <input type="submit" value= "Leer Más"></center>
-			
-				</form>					
-									
+				<form action="receta_completa.php" method="POST">
+				      <center><input type="submit" name="receta1" value="Leer Más"/></center>
+				</form>
 								</section>
 
 							</div>
@@ -131,9 +136,9 @@ print_r($_SESSION["ii"]);
                                     
                                 ?>
 				</form>
-                                    <ul class="buttons">
-								        <center><li><a href="#" class="button">Leer Más</a></li></center>
-							        </ul>
+                                <form action="receta_completa.php" method="POST">
+				      <center><input type="submit" name="receta2" value= "Leer Más"></center>
+				</form>
 									
 									
 								</section>
@@ -158,10 +163,9 @@ print_r($_SESSION["ii"]);
                                     
                                 ?>
 				</form>
-                                    <ul class="buttons">
-								        <center><li><a href="#" class="button">Leer Más</a></li></center>
-							        </ul>
-									
+                                <form action="receta_completa.php" method="POST">
+					<center><input type="submit" name="receta3" value="Leer Más"></center>
+				</form>
 									
 								</section>
 

@@ -35,14 +35,14 @@ session_start();
 
 		<!-- Header -->
 			<header id="header" class="skel-layers-fixed">
-				<h1><a href="index.html"><img alt="" src="images/easyfood.png"></a></h1>
+				<h1><a href="index.php"><img alt="" src="images/easyfood.png"></a></h1>
 				<nav id="nav">
 					<ul>
-						<li class="current"><a href="index.html">Inicio</a></li>
+						<li class="current"><a href="index.php">Inicio</a></li>
 						<li class="submenu">
 							<a href="">Menús</a>
 							<ul>
-								<li><a href="ingredientes.html">Mis ingredientes</a></li>
+								<li><a href="ingredientes.php">Mis ingredientes</a></li>
 								<li><a href="recetario.html">Recetario</a></li>
 								<li><a href="no-sidebar.html">Estoy de afán</a></li>
                                 <li><a href="insert_receta.php">Insertar Recetas</a></li>
@@ -120,6 +120,7 @@ session_start();
                                             <option value="carne">Carnes</option>
                                             <option value="pollo">Pollos</option>
                                             <option value="pescado">Pescados</option>
+					    <option value="desayunos">Desayunos</option>
                                            </select>
                                                                                     </div>
 									</div>
